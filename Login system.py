@@ -1,7 +1,14 @@
 from random import randint
 import random
+import re
 import string
 
+import re
+
+def check_email(email):
+    # 定义邮箱正则表达式
+    pattern = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
+    return re.match(pattern, email) is not None
 def generate_username(length=8):
     characters = string.ascii_lowercase + string.digits
     username = ''.join(random.choices(characters, k=length))
@@ -37,19 +44,25 @@ def progress_bar(sleep_time):
         print(f'\r正在处理... {i}%', end='')
         sleep(sleep_time)
     print('\n处理完成！')
-print('请输入昵称和密码')
-input_name = input('昵称:')
+print('欢迎回来！')
+input_email = input('请输入您的邮箱:')
+if not check_email(input_email):
+    print('邮箱格式不正确，请重新输入')
+    exit()
+    progress_bar(0.01)
+    print('邮箱输入成功')
+input_name = input('用户名:')
 if not input_name:
     username = generate_username()
-    progress_bar(0.1)
+    progress_bar(0.01)
     print(f'自动生成昵称: {username}')
 else:
     username = check_username(input_name)
-print(f'昵称:{username}输入成功')
+print(f'用户名:{username}输入成功')
 input_password = input('密码:')
 password = check_password(input_password)
 input_confirm = input('请再次输入密码:')
 confirm_password = check_confirm(input_confirm, password)
 print(f'密码:{confirm_password}输入成功')
-progress_bar(0.1)
+progress_bar(0.05)
 print(f'{username}注册成功！欢迎使用！')
